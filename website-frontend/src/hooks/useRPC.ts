@@ -9,11 +9,16 @@ const normalizeBackendURL = (raw: string) => {
   return withProtocol.replace(/\/+$/, '')
 }
 
-const backendBaseURL = normalizeBackendURL(
-  import.meta.env.VITE_BACKEND_URL || 'http://localhost:3033'
-)
+// Get backend URL from environment or use default
+const backendURL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3033'
+console.log('[v0] Backend URL from env:', backendURL)
+
+const backendBaseURL = normalizeBackendURL(backendURL)
 const httpURL = `${backendBaseURL}/rpc/http`
 const wsURL = backendBaseURL.replace(/^http/, 'ws') + '/rpc/ws'
+
+console.log('[v0] RPC HTTP endpoint:', httpURL)
+console.log('[v0] RPC WebSocket endpoint:', wsURL)
 
 export const rpcClientAtom = atom(new RPCClient(httpURL, wsURL))
 export const downloadsAtom = atom<any[]>([])
