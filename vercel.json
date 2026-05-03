@@ -1,7 +1,16 @@
 {
   "version": 2,
-  "installCommand": "cd website-frontend && pnpm install --frozen-lockfile",
-  "buildCommand": "cd website-frontend && pnpm build",
-  "outputDirectory": "website-frontend/dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "builds": [
+    {
+      "src": "website-frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
 }
