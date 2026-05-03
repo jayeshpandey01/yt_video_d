@@ -39,9 +39,15 @@ export const useRPC = () => {
     client.running().then((res) => {
       if (res.result && Array.isArray(res.result)) {
         setDownloads(res.result)
+        console.log('[v0] Successfully connected to RPC backend')
       }
-    }).catch(() => {
-      // no-op: websocket/HTTP failures are handled by component UX
+    }).catch((err) => {
+      console.error('[v0] Failed to connect to RPC backend:', {
+        message: err?.message || 'Unknown error',
+        url: httpURL,
+        wsUrl: wsURL
+      })
+      // Connection errors are handled by component UX
     })
     
     return () => sub.unsubscribe()
